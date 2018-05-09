@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class StoryModel implements Serializable {
     private int storyId = 0;
+    private int likeCount = 0;
     private String story;
     private String username;
     private int commentOnStoryID;

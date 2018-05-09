@@ -1,5 +1,7 @@
 package datalayer;
 
+import models.FollowModel;
+import models.GameModel;
 import models.StoryModel;
 import models.UserModel;
 
@@ -76,6 +78,50 @@ public class UserDao {
         }
 
         return user;
+    }
+
+    public static ArrayList<UserModel> getRecommendedUsers(UserModel user){
+        ArrayList<GameModel> userLikedGames = LikeGameDao.getLikedGames(user);
+        ArrayList<UserModel> allUsers = UserDao.getUsers();
+        ArrayList<UserModel> userList = new ArrayList<>();
+
+        for (UserModel u: allUsers){
+            //get liked games for u
+            ArrayList<GameModel> uLikes = LikeGameDao.getLikedGames(u);
+            int gamesInCommon = 0;
+            //compare each game in uLikes with each game in userLikedGames
+            for (GameModel uGame: uLikes){
+                for (GameModel userGame: userLikedGames){
+                    //if they are the same, they have a game in common
+                    if (uGame.getGameId() == userGame.getGameId()){
+                        gamesInCommon++;
+                    }
+                }
+            }
+
+            //if they have games in common, add them to the userList
+            if (gamesInCommon > 0){
+                userList.add(u);
+            }
+        }
+
+        return userList;
+    }
+
+    public static ArrayList<UserModel> getUsers() {
+        ArrayList<UserModel> users = new ArrayList<>();
+        String dir = DaoUtils.storageDirectoryName();
+        File folder = new File(dir);
+        File[] listOfFiles = folder.listFiles();
+
+        for(int i = 0; i < listOfFiles.length; i++){
+            if(listOfFiles[i].getName().startsWith("user") &&
+                    listOfFiles[i].getName().endsWith(".txt")){
+                users.add(getUser(listOfFiles[i]));
+            }
+        }
+
+        return users;
     }
 
     /**

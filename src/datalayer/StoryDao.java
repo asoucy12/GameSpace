@@ -1,6 +1,7 @@
 package datalayer;
 
 import models.StoryModel;
+import models.UserModel;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -54,6 +55,18 @@ public class StoryDao {
         saveStory(story);
     }
 
+    public static ArrayList<StoryModel> getStoriesByUser(UserModel user){
+        ArrayList<StoryModel> allStories = StoryDao.getStories();
+        ArrayList<StoryModel> userStories = new ArrayList<>();
+
+        for (StoryModel story: allStories){
+            if (story.getUsername().equalsIgnoreCase(user.getUsername())){
+                userStories.add(story);
+            }
+        }
+        return userStories;
+    }
+
     /**
      * Return all saved stories.
      */
@@ -67,6 +80,24 @@ public class StoryDao {
             if(listOfFiles[i].getName().startsWith("story") &&
                     listOfFiles[i].getName().endsWith(".txt")){
                 stories.add(getStory(listOfFiles[i]));
+            }
+        }
+
+        return stories;
+    }
+
+    public static ArrayList<StoryModel> getStoriesThatAreComments(int commentsOnStoryID){
+        ArrayList<StoryModel> stories = new ArrayList<>();
+        String dir = DaoUtils.storageDirectoryName();
+        File folder = new File(dir);
+        File[] listOfFiles = folder.listFiles();
+
+        for(int i = 0; i < listOfFiles.length; i++){
+            if(listOfFiles[i].getName().startsWith("story") && listOfFiles[i].getName().endsWith(".txt")){
+                StoryModel story = getStory(listOfFiles[i]);
+                if(story.getCommentOnStoryID() == commentsOnStoryID){
+                    stories.add(getStory(listOfFiles[i]));
+                }
             }
         }
 

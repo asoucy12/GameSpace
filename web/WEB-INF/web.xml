@@ -25,4 +25,50 @@
         <url-pattern>/welcome</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>viewDiscoverServlet</servlet-name>
+        <servlet-class>ui.ViewDiscoverServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>viewDiscoverServlet</servlet-name>
+        <url-pattern>/viewDiscover</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>viewStoryServlet</servlet-name>
+        <servlet-class>ui.ViewStoryServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>viewStoryServlet</servlet-name>
+        <url-pattern>/viewStory</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>viewMeServlet</servlet-name>
+        <servlet-class>ui.ViewMeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>viewMeServlet</servlet-name>
+        <url-pattern>/viewMe</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>viewUserServlet</servlet-name>
+        <servlet-class>ui.ViewUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>viewUserServlet</servlet-name>
+        <url-pattern>/viewUser</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>viewAddGameServlet</servlet-name>
+        <servlet-class>ui.ViewAddGameServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>viewAddGameServlet</servlet-name>
+        <url-pattern>/viewAddGame</url-pattern>
+    </servlet-mapping>
+
+
 </web-app>

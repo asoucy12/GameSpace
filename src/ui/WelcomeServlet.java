@@ -4,7 +4,6 @@ import datalayer.UserDao;
 import models.UserModel;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -25,38 +24,68 @@ public class WelcomeServlet extends javax.servlet.http.HttpServlet {
         // Load data from the request
         String buttonValue = request.getParameter("button");
         String username=request.getParameter("username");
+        String password=request.getParameter( "password");
+
 
         // Create an account
-        if (buttonValue != null && buttonValue.equals("Create Account") && username != null){
-            user = new UserModel();
-            user.setUsername(username);
-            UserDao.saveUser(user);
-        }
-
-        // Or log in
-        else if (buttonValue != null && buttonValue.equals("Log In")){
-            user = UserDao.getUser(username);
-            if (user == null) {
-                // We don't know who this is.
-                // We're going to stay on this page.
-                RequestDispatcher dispatcher=request.getRequestDispatcher("/welcome.jsp");
+        if (buttonValue != null && buttonValue.equals("Create Account")){
+            if (username != null && username.length() >= 0 && password != null && password.length() >= 0){
+                user = new UserModel();
+                user.setUsername(username);
+                user.setPassword(password);
+                UserDao.saveUser(user);
+                RequestDispatcher dispatcher=request.getRequestDispatcher("/viewStories");
                 dispatcher.forward(request, response);
-                return;
+            }
+            else{
+                String errorMessage = "Please fill in the username and password fields";
+                request.setAttribute("errorMessage", errorMessage);
             }
         }
 
-        // Or by anonymous
-        else if (buttonValue != null && buttonValue.equals("Be Anonymous")){
-            user = new UserModel();
-            user.setUsername("anonymous");
-            UserDao.saveUser(user);
+        // Or log in
+        else if (buttonValue != null && buttonValue.equals("LogIn")){
+            user = UserDao.getUser(username);
+            if (user != null && username != null && username.length() > 0 && password != null && password.length() > 0){
+                if(password.equals(user.getPassword())){
+                    RequestDispatcher dispatcher=request.getRequestDispatcher("/viewStories");
+                    dispatcher.forward(request, response);
+                }
+                else{
+                    String errorMessage = "Incorrect password";
+                    request.setAttribute("errorMessage", errorMessage);
+                }
+            }
+            else{
+                String errorMessage = "Incorrect username or password";
+                request.setAttribute("errorMessage", errorMessage);
+            }
+            if(user != null){
+                request.getSession().setAttribute("username", user.getUsername());
+                request.getSession().setAttribute("user", user);
+            }
+//            if (user == null) {
+//                String error = "Incorect username/password.";
+//                request.setAttribute("errorMessage", error);
+//                // We don't know who this is.
+//                // We're going to stay on this page.
+//                RequestDispatcher dispatcher=request.getRequestDispatcher("/welcome.jsp");
+//                dispatcher.forward(request, response);
+//                return;
+//            }
+//            else {
+//                if(password != user.getPassword()) {
+//                    String error = "Incorect password.";
+//                    request.setAttribute("errorMessage", error);
+//                    RequestDispatcher dispatcher = request.getRequestDispatcher("/welcome.jsp");
+//                    dispatcher.forward(request, response);
+//                    return;
+//                }
+//            }
         }
 
         // Load any data we need on the page into the request.
-        request.setAttribute("user", user);
-
-        // Show the stories page
-        RequestDispatcher dispatcher=request.getRequestDispatcher("/viewStories");
+        RequestDispatcher dispatcher=request.getRequestDispatcher("/welcome.jsp");
         dispatcher.forward(request, response);
     }
 

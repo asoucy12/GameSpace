@@ -2,7 +2,7 @@
 <%@ page import="com.endicott.edu.xxxxmodels.CollegeModel" --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<title>Endicott Unhappiness Project</title>
+<title>GameSpace</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <link rel="stylesheet" href = "resources/style.css">
 <!-- Latest compiled and minified CSS -->
@@ -16,6 +16,9 @@
 
 </head>
 <body>
+<%
+    String errorMessage = (String) request.getAttribute("errorMessage");
+%>
 <%--
   UiMessage msg = (UiMessage) request.getAttribute("message");
   if (msg == null) {
@@ -39,19 +42,27 @@
 
   <form action="welcome" method="post">
   <div class="jumbotron">
-    <h1>Endicott Unhappiness Project</h1>
-    <p>The art of being unhappy.</p>
+    <h1>GameSpace</h1>
+    <p>Connect with fellow gamers across all platforms!</p>
     <div class="form-group">
-      <input type="text" name="username" class="form-control" id="username" placeholder="User ID or Be Anonymous below. ">
+      <input type="text" name="username" class="form-control" id="username" placeholder="UserName: ">
+      <input type="password" name="password" class="form-control" id="password" placeholder="Password: ">
+
     </div>
     <div class="container">
-      <input type="submit" class="btn btn-info" name="button" value="Log In">
+      <input type="submit" class="btn btn-info" name="button" value="LogIn">
       <input type="submit" class="btn btn-info" name="button" value="Create Account">
-      <input type="submit" class="btn btn-info" name="button" value="Be Anonymous">
     </div>
   </div>
 
 <div class="container">
+        <% if(errorMessage!=null){ %>
+
+            <div class="alert alert-danger">
+                <strong>Error:</strong> <%=errorMessage%>
+            </div>
+
+        <% } %>
   <!-- Display a message if defined -->
   <%-- if (msg.getMessage().length() > 0) { %>
   <div class="alert alert-danger">
